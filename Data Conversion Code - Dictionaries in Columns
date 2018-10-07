@@ -1,0 +1,19 @@
+import numpy as np, pandas as pd, os,json
+
+os.chdir('/home/jai/Documents/Kaggle Competition/Google Analytics/')
+dat = pd.read_csv('Data/train.csv')
+dat.info()
+bckp = dat
+#%% 
+dat = bckp
+dat1 = dat.iloc[0:500000,:]
+dat2 = dat.iloc[500000:dat.shape[0],:]
+bckp.shape
+print("Loop Starts")
+for i in ['device','geoNetwork','totals','trafficSource']:
+    temp = pd.DataFrame.from_dict([json.loads(x) for x in dat[i]], orient='columns')
+    dat = pd.concat([dat, temp], axis=1)
+print("Loop Completed")
+
+dat.to_csv('TrainData.csv')
+%reset -f
